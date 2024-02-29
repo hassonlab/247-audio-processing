@@ -197,16 +197,17 @@ def get_datum(result):
 def main():
     args = arg_parser()
 
+    # vad_df = vad_pyannote(args)
+    # dia_df, speaker_df = diarization_pyannote(args)
+
+    # vad_df.to_csv(args.vad_filename, index=False)
+    # dia_df.to_csv(args.dia_filename, index=False)
+    # speaker_df.to_csv(args.speaker_filename, index=False)
+
     # load audio
-    vad_df = vad_pyannote(args)
-    dia_df, speaker_df = diarization_pyannote(args)
-
-    vad_df.to_csv(args.vad_filename, index=False)
-    dia_df.to_csv(args.dia_filename, index=False)
-    speaker_df.to_csv(args.speaker_filename, index=False)
-
-    # audio = whisper.load_audio(args.audio_filename)
-    # result = transcribe_whisper(args, audio)
+    audio = whisper.load_audio(args.audio_filename)
+    result = transcribe_whisper(args, audio)
+    breakpoint()
     # result = align_whisperx(args, audio, result)
 
     # saving results

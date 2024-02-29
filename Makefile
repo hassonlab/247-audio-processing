@@ -3,8 +3,8 @@ PRJCT_ID := podcast
 PRJCT_ID := tfs
 
 CMD := echo
-CMD := python
 CMD := sbatch submit.sh
+CMD := python
 
 SID := 500
 CONV_IDX := 798_30s_test
@@ -18,10 +18,11 @@ CONV_IDX := $(shell seq 0 0)
 
 # SID := 717
 # SID := 7170
-# CONV_IDX := $(shell seq 0 23)
+# CONV_IDX := $(shell seq 1 24)
 
 # SID := 798
 # CONV_IDX := $(shell seq 0 14)
+# CONV_IDX := 3
 
 
 link-data:

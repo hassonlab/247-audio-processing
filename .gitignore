@@ -1,6 +1,7 @@
 data
 logs
 results
+*.csv
 
 __pycache__
 .vscode
