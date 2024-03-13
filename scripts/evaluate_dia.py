@@ -9,6 +9,7 @@ def dia_summary():
     dia_dir = "results/%s/dia/*.csv"
 
     results = []
+    results_all = pd.DataFrame()
     for sid in [625, 676, 7170, 798]:
         dia_files = glob.glob(dia_dir % sid)
         for dia_file in dia_files:
@@ -20,21 +21,29 @@ def dia_summary():
                     dia_df_speaker.sid.unique()[0],
                     dia_df_speaker.conv.unique()[0],
                     speaker,
+                    len(dia_df_speaker),
                     dia_df_speaker.duration.sum(),
                     dia_df_speaker.len.unique()[0],
                 ]
                 results.append(result)
+            results_all = pd.concat((results_all, dia_df))
     results = pd.DataFrame(results)
-    results.columns = ["sid", "conv_idx", "speaker", "speaker_len", "audio_len"]
+    results.columns = [
+        "sid",
+        "conv_idx",
+        "speaker",
+        "utt_num",
+        "speaker_len",
+        "audio_len",
+    ]
     results.sort_values(by=["sid", "conv_idx", "speaker"], inplace=True)
     results.to_csv("summary_dia.csv", index=False)
+    results_all.to_csv("all_dia.csv", index=False)
 
     return results
 
 
-def main():
-
-    # dia_df = dia_summary()
+def speaker_summary():
     dia_df = pd.read_csv("summary_dia.csv")
 
     speaker_dir = "results/%s/speaker/*.csv"
@@ -49,7 +58,14 @@ def main():
 
     dia_df = dia_df.merge(results, how="inner", on=["sid", "conv_idx", "speaker"])
     dia_df.to_csv("summary_speaker.csv", index=False)
-    breakpoint()
+
+    return dia_df
+
+
+def main():
+
+    # dia_df = dia_summary()
+    # speaker_summary()
 
     return
 

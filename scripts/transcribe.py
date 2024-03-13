@@ -67,8 +67,12 @@ def transcribe_whisper(args, audio):
 
     model = whisper.load_model("tiny.en")
     result = model.transcribe(audio, language="en")
-    # result = model.transcribe(args.audio_filename)
 
+    # batch_size = 16  # reduce if low on GPU mem
+    # compute_type = "float16"  # change to "int8" if low on GPU mem (may reduce accuracy)
+
+    # model2 = whisperx.load_model(args.model, args.device, compute_type=compute_type)
+    # result2 = model2.transcribe(audio, batch_size=batch_size, language="en")
     end_time = datetime.now()
     print(f"Total runtime: {end_time - start_time} (HH:MM:SS)")
     return result
@@ -89,6 +93,7 @@ def align_whisperx(args, audio, result):
         args.device,
         return_char_alignments=True,
     )
+    breakpoint()
 
     end_time = datetime.now()
     print(f"Total runtime: {end_time - start_time} (HH:MM:SS)")
@@ -197,17 +202,16 @@ def get_datum(result):
 def main():
     args = arg_parser()
 
-    # vad_df = vad_pyannote(args)
-    # dia_df, speaker_df = diarization_pyannote(args)
+    vad_df = vad_pyannote(args)
+    dia_df, speaker_df = diarization_pyannote(args)
 
     # vad_df.to_csv(args.vad_filename, index=False)
     # dia_df.to_csv(args.dia_filename, index=False)
     # speaker_df.to_csv(args.speaker_filename, index=False)
 
     # load audio
-    audio = whisper.load_audio(args.audio_filename)
-    result = transcribe_whisper(args, audio)
-    breakpoint()
+    # audio = whisper.load_audio(args.audio_filename)
+    # result = transcribe_whisper(args, audio)
     # result = align_whisperx(args, audio, result)
 
     # saving results
